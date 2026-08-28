@@ -22,7 +22,7 @@ Two separate build pipelines, which is why their CPU flags differ. The slow one 
 
 | platform | use | why |
 |---|---|---|
-| **Windows** | [llama.cpp release, two zips](docs/windows/RESULTS.md) — 154 MB | 82.7 t/s, matches self-compiled, no toolchain |
+| **Windows** | [llama.cpp release, one zip](docs/windows/RESULTS.md) — 137 MB | 82.7 t/s, matches self-compiled, no toolchain |
 | **Linux** | [self-compile](docs/linux/RESULTS.md) — `-march=x86-64-v3` ships as one portable binary | no CUDA release binary exists for Linux; ~82-83.5 against `llama.app`'s 49.4 |
 
 | document | |
@@ -117,8 +117,8 @@ uv run scripts/download_models.py --dest ./models
 ```powershell
 LLAMA_VERSION=b10107 powershell -File install.ps1        # llama.app
 
-gh release download b10107 -R ggml-org/llama.cpp `       # llama.cpp release, unzip both
-  -p "llama-b10107-bin-win-cpu-x64.zip" -p "llama-b10107-bin-win-cuda-13.3-x64.zip"
+gh release download b10107 -R ggml-org/llama.cpp `       # llama.cpp release, one asset
+  -p "llama-b10107-bin-win-cuda-13.3-x64.zip"
 
 scripts/windows/build.ps1 -Config native                 # self-compiled
 scripts/windows/build.ps1 -Config replica                # llama.app's own settings

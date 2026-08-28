@@ -8,7 +8,7 @@
 `ubuntu-vulkan-x64`、`ubuntu-rocm`、`ubuntu-sycl-fp16/fp32`、`ubuntu-openvino`、`arm64`、
 `s390x` —— 但**沒有任何一個是 CUDA**。release 裡所有 CUDA asset 都是 `win-`，`b10107`、`b10644` 與目前最新的 `b10665` 都查過。
 
-所以 Windows 的答案（下載兩個 zip）在 Linux 上不成立。Linux 的 CUDA 選項是：
+所以 Windows 的答案（下載一個 release asset）在 Linux 上不成立。Linux 的 CUDA 選項是：
 
 | 方案 | t/s | 每台機器要安裝 |
 |---|---|---|

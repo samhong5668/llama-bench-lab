@@ -6,7 +6,7 @@
 
 | option | t/s | needs installing |
 |---|---|---|
-| **llama.cpp release** (two zips) | **82.7** | nothing — download and unzip |
+| **llama.cpp release** (one zip) | **82.7** | nothing — download and unzip |
 | self-compiled (`GGML_NATIVE=ON`) | 83.1 | VS Build Tools + CMake + CUDA Toolkit |
 | `llama.app` (`llama-install.sh`) | **38.9** | one command |
 
@@ -23,15 +23,18 @@ data cannot separate them.
 
 ## What to download
 
-Both of these, extracted into **one** folder — 154 MB total:
+**One asset, 137 MB.** Each backend zip is a superset of the CPU zip, so the CPU zip is not
+a separate download. Verified by listing `llama-b10107-bin-win-cuda-13.3-x64.zip`:
 
-| asset | size | contents |
-|---|---|---|
-| `llama-bXXXXX-bin-win-cpu-x64.zip` | 17 MB | the executables + 14 `ggml-cpu-*.dll` variants |
-| `llama-bXXXXX-bin-win-cuda-13.3-x64.zip` | 137 MB | just `ggml-cuda.dll` |
+| the CUDA zip contains | |
+|---|---|
+| 22 executables | including `llama-server.exe` |
+| 14 `ggml-cpu-*.dll` variants | the runtime-dispatched CPU backend |
+| `libomp140.x86_64.dll` | what those variants link against |
+| `ggml-cuda.dll` | 133 MB of the 137 |
 
-The CUDA zip alone is useless — it contains no executables. Pin a `bXXXXX` build tag: the
-semantic tags (`v0.3.0`) carry no binaries.
+The `win-vulkan-x64` zip (31 MB) is self-contained the same way. Pin a `bXXXXX` build tag:
+the semantic tags (`v0.3.0`) carry no binaries.
 
 There are exactly two x64 CUDA variants, verified on `b10107`, `b10644` and `b10665`:
 
@@ -77,7 +80,7 @@ initial device probe. `llama.app`'s `llama.exe` imports `cublas64_13.dll` the sa
 its Linux build, which statically links cuBLAS) and also runs against `torch/lib`.
 
 **A project that already installs `torch==2.13.0+cu130` can point `PATH` at `torch/lib` and skip
-the 372 MB download**, cutting the one-click install from 526 MB to 154 MB. Match the major
+the 372 MB download**, cutting the one-click install from 509 MB to 137 MB. Match the major
 version: `+cu130` provides `cublas64_13`, which pairs with the `win-cuda-13.3` zip.
 
 ### The other run-time dependencies
@@ -86,7 +89,7 @@ None of these costs a download in this project, but all are real:
 
 | dependency | needed by | where it comes from |
 |---|---|---|
-| `libomp140.x86_64.dll` | every `ggml-cpu-*.dll` | shipped inside the `win-cpu-x64` zip — self-contained |
+| `libomp140.x86_64.dll` | every `ggml-cpu-*.dll` | shipped inside the release zip — self-contained |
 | `MSVCP140.dll`, `VCRUNTIME140.dll` | `ggml-cuda.dll` and every `ggml-cpu-*.dll` | the VC++ redistributable |
 | `VCRUNTIME140_1.dll` | `ggml-cuda.dll` only | the VC++ redistributable |
 

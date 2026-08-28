@@ -20,7 +20,7 @@
 
 | 平台 | 用 | 理由 |
 |---|---|---|
-| **Windows** | [llama.cpp release，兩個 zip](docs/windows/RESULTS.zh-TW.md) —— 154 MB | 82.7 t/s，與自編相當，零建置工具 |
+| **Windows** | [llama.cpp release，一個 zip](docs/windows/RESULTS.zh-TW.md) —— 137 MB | 82.7 t/s，與自編相當，零建置工具 |
 | **Linux** | [自編](docs/linux/RESULTS.zh-TW.md) —— `-march=x86-64-v3` 可編一次散布 | Linux 沒有 CUDA release binary；約 82～83.5 對 `llama.app` 的 49.4 |
 
 | 文件 | |
@@ -108,8 +108,8 @@ uv run scripts/download_models.py --dest ./models
 ```powershell
 LLAMA_VERSION=b10107 powershell -File install.ps1        # llama.app
 
-gh release download b10107 -R ggml-org/llama.cpp `       # llama.cpp release，兩個都要解壓
-  -p "llama-b10107-bin-win-cpu-x64.zip" -p "llama-b10107-bin-win-cuda-13.3-x64.zip"
+gh release download b10107 -R ggml-org/llama.cpp `       # llama.cpp release，一個 asset 就夠
+  -p "llama-b10107-bin-win-cuda-13.3-x64.zip"
 
 scripts/windows/build.ps1 -Config native                 # 自編
 scripts/windows/build.ps1 -Config replica                # llama.app 自己的設定

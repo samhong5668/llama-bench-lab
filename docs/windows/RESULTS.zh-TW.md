@@ -6,7 +6,7 @@
 
 | 方案 | t/s | 需要安裝 |
 |---|---|---|
-| **llama.cpp release**（兩個 zip） | **82.7** | 無 —— 下載解壓即可 |
+| **llama.cpp release**（一個 zip） | **82.7** | 無 —— 下載解壓即可 |
 | 自編（`GGML_NATIVE=ON`） | 83.1 | VS Build Tools + CMake + CUDA Toolkit |
 | `llama.app`（`llama-install.sh`） | **38.9** | 一行指令 |
 
@@ -21,14 +21,17 @@ release 有可能**比自編更快**嗎？理論上有 —— 它回報了 `AVX_
 
 ## 要下載什麼
 
-兩個都要，解壓到**同一個**資料夾 —— 合計 154 MB：
+**一個 asset，137 MB。** 每個 backend zip 都是 CPU zip 的超集合，所以 CPU zip 不需要另外下載。
+列出 `llama-b10107-bin-win-cuda-13.3-x64.zip` 的內容實際確認過：
 
-| asset | 大小 | 內容 |
-|---|---|---|
-| `llama-bXXXXX-bin-win-cpu-x64.zip` | 17 MB | 執行檔 + 14 個 `ggml-cpu-*.dll` 變體 |
-| `llama-bXXXXX-bin-win-cuda-13.3-x64.zip` | 137 MB | 只有 `ggml-cuda.dll` |
+| CUDA zip 裡有 | |
+|---|---|
+| 22 個執行檔 | 含 `llama-server.exe` |
+| 14 個 `ggml-cpu-*.dll` 變體 | 執行期分派的 CPU backend |
+| `libomp140.x86_64.dll` | 那些變體連結的對象 |
+| `ggml-cuda.dll` | 137 MB 中的 133 MB |
 
-只下載 CUDA 那包沒有用 —— 裡面沒有任何執行檔。pin 版本要用 `bXXXXX` 這種 build tag：
+`win-vulkan-x64`（31 MB）同樣自足。pin 版本要用 `bXXXXX` 這種 build tag：
 語意化的 tag（`v0.3.0`）沒有附 binary。
 
 x64 的 CUDA 變體**只有兩個**，在 `b10107`、`b10644`、`b10665` 上都確認過：
@@ -74,7 +77,7 @@ token generation 和 prompt processing 都正常，所以 cuBLAS 的呼叫確實
 那邊是靜態連結 cuBLAS），一樣能靠 `torch/lib` 跑起來。
 
 **已經安裝 `torch==2.13.0+cu130` 的專案可以把 `PATH` 指向 `torch/lib`，省下那 372 MB**，
-一鍵安裝的下載量從 526 MB 降到 154 MB。注意大版本要對上：`+cu130` 提供 `cublas64_13`，
+一鍵安裝的下載量從 509 MB 降到 137 MB。注意大版本要對上：`+cu130` 提供 `cublas64_13`，
 搭配 `win-cuda-13.3` 那包。
 
 ### 其他執行期依賴
@@ -83,7 +86,7 @@ token generation 和 prompt processing 都正常，所以 cuBLAS 的呼叫確實
 
 | 依賴 | 誰需要 | 從哪來 |
 |---|---|---|
-| `libomp140.x86_64.dll` | 每一顆 `ggml-cpu-*.dll` | 就在 `win-cpu-x64` 那包裡 —— 自足 |
+| `libomp140.x86_64.dll` | 每一顆 `ggml-cpu-*.dll` | 就在 release 那包裡 —— 自足 |
 | `MSVCP140.dll`、`VCRUNTIME140.dll` | `ggml-cuda.dll` 與每一顆 `ggml-cpu-*.dll` | VC++ redistributable |
 | `VCRUNTIME140_1.dll` | 只有 `ggml-cuda.dll` | VC++ redistributable |
 

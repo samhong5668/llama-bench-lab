@@ -9,7 +9,7 @@
 `s390x` — but not one of them is CUDA. Every CUDA asset in the release is `win-`, verified on
 `b10107`, `b10644` and the current `b10665`.
 
-So the Windows answer (download two zips) does not transfer. On Linux the CUDA options are:
+So the Windows answer (download one release asset) does not transfer. On Linux the CUDA options are:
 
 | option | t/s | needs installing on each machine |
 |---|---|---|
