@@ -2,7 +2,7 @@
 
 # 標題
 
-CUDA/ROCm presets never set `LLAMA_INSTALL_FLAGS`, so those binaries ship a baseline x86-64 CPU backend — 2.1x slower than llama.cpp's own release of the same commit
+CUDA/ROCm presets miss LLAMA_INSTALL_FLAGS: CPU backend has no vector ISA
 
 # 內文
 
@@ -45,7 +45,7 @@ llama-bench -m qwen2.5-0.5b-instruct-q4_k_m.gguf -p 0 -n 64 -ngl 0 -t 6 -r 3
 
 ## 現象重現
 
-已 pin 的 `b10107` 與目前最新的 `b10612`，Windows 與 Linux 都回報：
+已 pin 的 `b10107` 與 `b10612`，Windows 與 Linux 都回報：
 
 ```
 system_info: ... | CUDA : ARCHS = 1200 | USE_GRAPHS = 1 | BLACKWELL_NATIVE_FP4 = 1 |
@@ -237,5 +237,4 @@ P-core/E-core CPU 的執行緒配置，不是熱節流也不是記憶體：漂�
 ---
 
 建置腳本、全部量測數據、以及完整記錄（含讓這題天真量測三次得出錯誤答案的那些陷阱）：
-<!-- repo 在送出前是私有的 —— 要先轉公開，不然這個連結會 404。 -->
 https://github.com/samhong5668/llama-bench-lab

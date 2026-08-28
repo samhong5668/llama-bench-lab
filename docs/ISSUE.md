@@ -2,7 +2,7 @@
 
 # Title
 
-CUDA/ROCm presets never set `LLAMA_INSTALL_FLAGS`, so those binaries ship a baseline x86-64 CPU backend — 2.1x slower than llama.cpp's own release of the same commit
+CUDA/ROCm presets miss LLAMA_INSTALL_FLAGS: CPU backend has no vector ISA
 
 # Body
 
@@ -48,7 +48,7 @@ would help.
 
 ## Reproduction of the symptom
 
-Both the pinned `b10107` and the current `b10612`, on Windows and Linux, report:
+Both the pinned `b10107` and `b10612`, on Windows and Linux, report:
 
 ```
 system_info: ... | CUDA : ARCHS = 1200 | USE_GRAPHS = 1 | BLACKWELL_NATIVE_FP4 = 1 |
@@ -253,5 +253,4 @@ comment. Given the "for now", it may be worth re-checking whether that still rep
 
 Build scripts, every measurement, and the full write-up (including the measurement
 pitfalls that made naive benchmarking of this give wrong answers three times):
-<!-- The repository is private until this is posted - make it public first, or the link 404s. -->
 https://github.com/samhong5668/llama-bench-lab

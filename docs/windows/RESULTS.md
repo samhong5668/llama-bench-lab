@@ -164,7 +164,7 @@ batch, 78.33 in another; see the drift note in the README). So the 372 MB saving
 ## The problem
 
 `llama.app`'s CUDA binary ships a CPU backend with **no vector instructions at all**. Its
-`system_info`, on both the pinned `b10107` and the current `b10612`:
+`system_info`, on both the pinned `b10107` and `b10612`:
 
 ```
 CPU : LLAMAFILE = 1 | REPACK = 1          <- no AVX / AVX2 / FMA / F16C / AVX_VNNI

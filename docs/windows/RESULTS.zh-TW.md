@@ -154,7 +154,7 @@ cublasLt64_13.dll    ...\torch\lib\cublasLt64_13.dll
 ## 問題
 
 `llama.app` 的 CUDA binary 附帶的 CPU backend **完全沒有向量指令**。它的 `system_info`
-（已 pin 的 `b10107` 與最新的 `b10612` 皆同）：
+（已 pin 的 `b10107` 與 `b10612` 皆同）：
 
 ```
 CPU : LLAMAFILE = 1 | REPACK = 1          ← 沒有 AVX / AVX2 / FMA / F16C / AVX_VNNI
