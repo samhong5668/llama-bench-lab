@@ -1,0 +1,27 @@
+# Everything below is generated: build output, downloaded binaries, or raw benchmark output.
+# Only README*, docs/, scripts/ and the uv files belong in the repository.
+#
+# Raw benchmark output is deliberately not tracked — the numbers that matter are transcribed
+# into docs/MEASUREMENTS.md, which is the citable record. Keeping the JSON/CSV/log alongside
+# it would just be noise that goes stale.
+/results/
+
+# llama.cpp source tree, cloned on demand by scripts/build.ps1
+/src/
+
+# build outputs
+/build/
+/build-*/
+
+# official llama.cpp release, downloaded and extracted on demand
+/official-*/
+*.zip
+*.tar.gz
+
+# models are never checked in
+*.gguf
+/models/
+
+# uv environment (uv.lock IS tracked, so the download script is reproducible)
+.venv/
+__pycache__/

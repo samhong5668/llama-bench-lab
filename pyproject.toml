@@ -1,0 +1,12 @@
+[project]
+name = "llama-bench-lab"
+version = "0.1.0"
+description = "Why the llama.app CUDA prebuilt is slower than llama.cpp's own release"
+requires-python = ">=3.10"
+dependencies = [
+    # 0.27 is where the Xet-backed transfer replaced hf_transfer as the fast path.
+    "huggingface-hub>=0.27",
+]
+
+[tool.uv]
+package = false
