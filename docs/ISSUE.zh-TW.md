@@ -21,8 +21,8 @@ CUDA/ROCm presets miss LLAMA_INSTALL_FLAGS: CPU backend has no vector ISA
 | --- | --- | --- |
 | Nemotron-30B-A3B-Q4_0，expert 在 CPU | **82.7 t/s** | **38.9 t/s** |
 
-同樣的效應用小得多的重現方式也看得到，可能更方便檢查。`-ngl 0` 之下全部計算都在 CPU，
-不需要大模型也不需要調 offload 參數：
+同樣的效應用小得多的重現方式也看得到，可能更方便檢查。`-p 0 -n 64 -ngl 0` 量的是 CPU 上的
+token generation，不需要大模型也不需要調 offload 參數：
 
 ```
 llama-bench -m qwen2.5-0.5b-instruct-q4_k_m.gguf -p 0 -n 64 -ngl 0 -t 6 -r 3

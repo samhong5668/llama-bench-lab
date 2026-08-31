@@ -8,7 +8,9 @@
 #   scripts/windows/bench.ps1 -Model <gguf> -Binaries a\llama-bench.exe,b\llama-bench.exe
 #
 # Defaults measure the deployment workload (experts on the CPU). To compare CPU backends
-# instead, which is far less noisy, use a small model with -ngl 0 so all compute is on the CPU:
+# instead, which is far less noisy, use a small model with -p 0 -n 64 -ngl 0: that benchmarks
+# token generation on the CPU. (-ngl 0 alone still lets the GPU take prompt processing; pass
+# --device none to rule the GPU out entirely.)
 #
 #   ... -Model qwen2.5-0.5b-instruct-q4_k_m.gguf -BenchArgs "-p 0 -n 64 -ngl 0 -t 6 -r 3"
 #

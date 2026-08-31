@@ -47,11 +47,18 @@ conclusion here, and each was only caught by re-measuring.
 
 `-r N` catches none of the first two: the first iteration warms the rest.
 
-**If you only need to compare CPU backends, use `-ngl 0` on a small model.** All compute lands
-on the CPU, so the GPU and the offload split drop out and most of the drift below with them —
-4–6% spread on Windows against 12–24% for the offload workload, with no pinning needed. It
-answers a narrower question than the deployment numbers, but it answers it cleanly, and it is
-what finally separated build flags that the offload workload could not.
+**If you only need to compare CPU backends, use `-p 0 -n 64 -ngl 0` on a small model.** Token
+generation then runs entirely on the CPU, so the GPU and the offload split drop out and most of
+the drift below with them — 4–6% spread on Windows against 12–24% for the offload workload, with
+no pinning needed. It answers a narrower question than the deployment numbers, but it answers it
+cleanly, and it is what finally separated build flags that the offload workload could not.
+
+Keep the `-p 0`. `-ngl 0` on its own is **not** a pure-CPU run: llama.cpp still sends large batch
+matmuls to the GPU, and prompt processing is exactly that workload — its own
+[`docs/build.md`](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md) says so and
+points at `--device none` instead. Measured here, 0.5B Q8_0, `-ngl 0` vs `--device none`: prompt
+processing 2472 vs 548 t/s (**4.5x**), token generation 80.67 vs 80.54 t/s (0.2%). So `-n` is safe
+under `-ngl 0` and `-p` is not. Every CPU-backend number in this repo was taken with `-p 0`.
 
 Under WSL2 the same measurement is noisier, and differently so: interference is **one-sided**,
 showing up as occasional rounds where the in-run stddev jumps to ±44 while the mean collapses.

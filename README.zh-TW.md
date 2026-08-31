@@ -44,10 +44,17 @@
 
 `-r N` 偵測不到前兩者：第一次迭代就把後面暖起來了。
 
-**如果只需要比較 CPU backend，用小模型加 `-ngl 0`。** 全部計算都落在 CPU，於是 GPU 與
-offload 切分退出，下面講的漂移也大半隨之消失 —— Windows 上全距 4～6%，而 offload 工作負載是
-12～24%，而且完全不需要綁定。它回答的問題比部署數字窄，但回答得乾淨，而且正是它最後分離出
-offload 工作負載分不出來的那些建置旗標。
+**如果只需要比較 CPU backend，用小模型加 `-p 0 -n 64 -ngl 0`。** 這樣 token generation 全部
+落在 CPU，於是 GPU 與 offload 切分退出，下面講的漂移也大半隨之消失 —— Windows 上全距 4～6%，
+而 offload 工作負載是 12～24%，而且完全不需要綁定。它回答的問題比部署數字窄，但回答得乾淨，
+而且正是它最後分離出 offload 工作負載分不出來的那些建置旗標。
+
+`-p 0` 不能省。單獨的 `-ngl 0` **不是**純 CPU 執行：llama.cpp 仍然會把大批次 matmul 送上 GPU，
+而 prompt processing 正是這種工作負載 —— 它自己的
+[`docs/build.md`](https://github.com/ggml-org/llama.cpp/blob/master/docs/build.md) 就這麼寫，並
+且叫你改用 `--device none`。本機實測，0.5B Q8_0，`-ngl 0` 對 `--device none`：prompt processing
+2472 對 548 t/s（**4.5 倍**），token generation 80.67 對 80.54 t/s（0.2%）。所以 `-ngl 0` 之下
+`-n` 是安全的，`-p` 不是。本 repo 所有 CPU backend 數字都是帶 `-p 0` 量的。
 
 WSL2 上同樣的量測更吵，而且吵法不同：干擾是**單向的** —— 表現為偶爾某一輪的行程內 stddev
 跳到 ±44 而平均值塌掉。請依 stddev 剔除那些輪次，不要把它們平均進去；而且在那裡**不要**綁

@@ -211,8 +211,10 @@ binary 是正確的），而 `scripts/generate.py` 用 `LLAMA_INSTALL_FLAGS` 為
 
 ## 只看 CPU backend 本身：5.13 倍
 
-這整個調查裡最乾淨的一次量測。`-ngl 0` 把**全部**計算放在 CPU 上，於是 GPU、offload 切分、
-執行緒配置漂移全部退出。0.5B 模型，`-p 0 -n 64 -ngl 0 -t 6 -r 3`，每顆都先暖機，交錯五輪
+這整個調查裡最乾淨的一次量測。`-p 0 -n 64` 只量 token generation，而 `-ngl 0` 之下的 token
+generation 全部在 CPU 上，於是 GPU、offload 切分、執行緒配置漂移全部退出。（`-ngl 0` 並**不會**
+把 GPU 從 prompt processing 拿掉 —— 見 README 的說明 —— 這正是指令裡要有 `-p 0` 的原因。）
+0.5B 模型，`-p 0 -n 64 -ngl 0 -t 6 -r 3`，每顆都先暖機，交錯五輪
 （`scripts/windows/bench.ps1`）：
 
 | 輪次 | llama.cpp release | 自編 native | `replica`（無向量指令） |

@@ -6,7 +6,8 @@
 #
 # Defaults measure the deployment workload (Nemotron with experts on the CPU, E-core pinned).
 # To compare CPU backends instead, which is far less noisy, override BENCH_ARGS with a small
-# model and -ngl 0 so all compute lands on the CPU:
+# model with -p 0 -n 64 -ngl 0, which benchmarks token generation on the CPU (-ngl 0 alone
+# still lets the GPU take prompt processing; use --device none to rule it out entirely):
 #
 #   BENCH_ARGS="-p 0 -n 64 -ngl 0 -t 6 -r 3" scripts/linux/bench3.sh qwen2.5-0.5b-*.gguf 5
 #

@@ -221,8 +221,10 @@ Batch B — adding a self-compiled build:
 
 ## The CPU backend on its own: 5.13x
 
-The cleanest measurement in this investigation. `-ngl 0` puts **all** compute on the CPU, so the
-GPU, the offload split and the thread-placement drift all drop out. 0.5B model,
+The cleanest measurement in this investigation. `-p 0 -n 64` benchmarks token generation only,
+and token generation under `-ngl 0` runs entirely on the CPU, so the GPU, the offload split and
+the thread-placement drift all drop out. (`-ngl 0` does *not* keep the GPU out of prompt
+processing — see the note in the README — which is why `-p 0` is part of the command.) 0.5B model,
 `-p 0 -n 64 -ngl 0 -t 6 -r 3`, every binary warmed, alternating five rounds
 (`scripts/windows/bench.ps1`):
 

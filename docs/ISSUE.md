@@ -24,7 +24,8 @@ per-token critical path and the difference shows up:
 | Nemotron-30B-A3B-Q4_0, experts on CPU | **82.7 t/s** | **38.9 t/s** |
 
 The same effect is visible with a much smaller reproducer, which may be more convenient to
-check. With `-ngl 0` all compute is on the CPU, and no large model or offload tuning is needed:
+check. `-p 0 -n 64 -ngl 0` benchmarks token generation on the CPU, so no large model and no
+offload tuning is needed:
 
 ```
 llama-bench -m qwen2.5-0.5b-instruct-q4_k_m.gguf -p 0 -n 64 -ngl 0 -t 6 -r 3
